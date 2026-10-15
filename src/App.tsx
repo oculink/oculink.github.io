@@ -5,6 +5,31 @@ function App() {
   const [highestZ, setHighestZ] = useState(10);
   const [timestamp, setTimestamp] = useState('00:00:00');
   const [webcamOpacity, setWebcamOpacity] = useState(0.7);
+  const [viewCount, setViewCount] = useState<number | null>(null);
+
+  // Visit counter: increments once per page load (refresh to update), not real-time
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch('https://api.countapi.xyz/hit/kyledev-portfolio/visits');
+        const data = await res.json();
+        if (!cancelled && typeof data.value === 'number') {
+          setViewCount(data.value);
+        }
+      } catch {
+        // countapi is unreliable/offline — fall back to a local counter
+        const KEY = 'vhs-view-count';
+        const base = parseInt(localStorage.getItem(KEY) || '1337', 10);
+        const next = base + 1;
+        localStorage.setItem(KEY, String(next));
+        if (!cancelled) setViewCount(next);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
   const [windowOpacities, setWindowOpacities] = useState<Record<string, number>>({
     header: 1,
     about: 1,
@@ -62,7 +87,10 @@ function App() {
     <div className="main-bg scanlines">
       {/* VHS Overlays */}
       <div className="vhs-rec">REC</div>
-      <div className="vhs-timestamp">PLAY ▶ {timestamp}</div>
+      <div className="vhs-timestamp">
+        PLAY ▶ {timestamp}
+        <div className="vhs-views">{viewCount === null ? 'LOADING...' : `Views: ${viewCount}`}</div>
+      </div>
       <div className="noise-overlay"></div>
       <div className="vhs-intense-overlay"></div>
 
