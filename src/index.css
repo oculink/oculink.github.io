@@ -151,12 +151,6 @@ body {
   letter-spacing: 2px;
 }
 
-.vhs-views {
-  margin-top: 2px;
-  font-size: 14px;
-  opacity: 0.85;
-}
-
 .vhs-rec {
   position: fixed;
   top: 20px;

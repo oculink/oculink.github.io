@@ -1,38 +1,11 @@
-import { useState, useEffect, useMemo, useRef } from 'react';
-import { createClient } from '@supabase/supabase-js';
-
-const SUPABASE_URL = (import.meta.env.VITE_SUPABASE_URL ?? '').trim();
-const SUPABASE_ANON_KEY = (import.meta.env.VITE_SUPABASE_ANON_KEY ?? '').trim();
-const viewsConfigured = Boolean(SUPABASE_URL && SUPABASE_ANON_KEY);
+import { useState, useEffect, useMemo } from 'react';
 
 function App() {
   const [zIndex, setZIndex] = useState<Record<string, number>>({});
   const [highestZ, setHighestZ] = useState(10);
   const [timestamp, setTimestamp] = useState('00:00:00');
   const [webcamOpacity, setWebcamOpacity] = useState(0.7);
-  const [viewCount, setViewCount] = useState<number | null>(null);
 
-  // Global view counter: atomically increments a shared Supabase row once per load.
-  const countedRef = useRef(false);
-  useEffect(() => {
-    if (!viewsConfigured || countedRef.current) return;
-    countedRef.current = true;
-    let cancelled = false;
-    (async () => {
-      try {
-        const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-        const { data, error } = await supabase.rpc('record_page_view');
-        if (!cancelled && !error && typeof data === 'number') {
-          setViewCount(data);
-        }
-      } catch {
-        // leave the count as '—' rather than show a fabricated number
-      }
-    })();
-    return () => {
-      cancelled = true;
-    };
-  }, []);
   const [windowOpacities, setWindowOpacities] = useState<Record<string, number>>({
     header: 1,
     about: 1,
@@ -92,7 +65,6 @@ function App() {
       <div className="vhs-rec">REC</div>
       <div className="vhs-timestamp">
         PLAY ▶ {timestamp}
-        <div className="vhs-views">{viewCount === null ? (viewsConfigured ? 'LOADING...' : 'Views: —') : `Views: ${viewCount}`}</div>
       </div>
       <div className="noise-overlay"></div>
       <div className="vhs-intense-overlay"></div>
