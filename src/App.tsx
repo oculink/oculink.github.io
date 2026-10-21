@@ -312,7 +312,7 @@ function AboutMeContent() {
               <span className="text-green-400 font-bold">~ $</span> cat about.txt
             </p>
             <p className="text-cyan-200 mt-3">
-              Hey, I'm oculink. I happen to have social anxiety, ADHD, bipolar, and BPD. 
+              Hey, I'm oculink. You can call me that, P-Chan or just P. I happen to have social anxiety, ADHD, bipolar, and BPD. 
               I'm a boyfailure who spends most of my time coding, developing, and sometimes debugging.
             </p>
             <p className="text-cyan-200 mt-3">
@@ -321,7 +321,8 @@ function AboutMeContent() {
               flavored stuff, and juice smoothies.
             </p>
             <p className="text-cyan-200 mt-3">
-              For games, I play Minecraft, Roblox, Portal 2, Geometry Dash, and Needy Streamer Overload.
+              For games, you can check my Steam profile on what games I play. But I do also play
+              games outside Steam such as Minecraft and Roblox.
             </p>
           </div>
         </div>
